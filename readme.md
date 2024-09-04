@@ -1,6 +1,6 @@
 gitlab
 ```
-gitlab.localhost
+http://gitlab.localhost
 ```
 
 gitlab admin
