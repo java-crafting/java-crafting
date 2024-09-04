@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:17.2.4-ce.0
+    container_name: gitlab
+    restart: always
+    hostname: 'gitlab.localhost'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.localhost'
+        gitlab_rails['initial_root_password'] = 'ComplexP@ssw0rd2024!'
+    ports:
+      - '80:80'
+      - '443:443'
+      - '22:22'
+    volumes:
+      - 'gitlab-config:/etc/gitlab'
+      - 'gitlab-logs:/var/log/gitlab'
+      - 'gitlab-data:/var/opt/gitlab'
+      
+  jira:
+    image: atlassian/jira-software:9.4
+    container_name: jira
+    environment:
+      - ATL_JIRA_DB_TYPE=postgres8
+      - ATL_JIRA_DB_HOST=localhost
+      - ATL_JIRA_DB_PORT=5432
+      - ATL_JIRA_DB_USERNAME=postgres
+      - ATL_JIRA_DB_PASSWORD=postgres
+      - ATL_JIRA_DB_DATABASE=db
+    ports:
+      - "8081:8080"
+    volumes:
+      - 'jira-data:/var/atlassian/application-data/jira'
+      - 'jira-logs:/var/log/jira'
+
+volumes:
+  gitlab-config:
+  gitlab-logs:
+  gitlab-data:
+  jira-data:
+  jira-logs:
